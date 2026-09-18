@@ -24,10 +24,11 @@ std::vector<Chunk> Chunker::chunk(const Document& document,
         const std::size_t remaining = tokens.size() - begin;
         std::size_t end = tokens.size();
         if (remaining > policy_.max_tokens) {
-            end = begin + policy_.max_tokens;
+            const std::size_t hard_end = begin + policy_.max_tokens;
+            end = hard_end;
             const std::size_t preferred_begin = begin +
                 policy_.max_tokens - policy_.paragraph_window;
-            for (std::size_t candidate = preferred_begin; candidate <= end; ++candidate) {
+            for (std::size_t candidate = preferred_begin; candidate <= hard_end; ++candidate) {
                 if (candidate > begin && candidate < tokens.size() &&
                     tokens[candidate - 1].paragraph != tokens[candidate].paragraph) {
                     end = candidate;
